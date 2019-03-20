@@ -96,3 +96,10 @@
 30.删除一个本地标签：git tag -d <tagname>
 
 31.删除一个远程标签：git push origin :refs/tags/<tagname>
+
+push错误
+git push错误failed to push some refs to的解决
+
+使用命令：git pull --rebase origin master
+这条命令表示，撤销上一次的版本提交，把远程仓库的最近更新的提交，合并到本地仓库，然后在提交，就可以从新push到远程仓库
+

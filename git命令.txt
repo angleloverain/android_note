@@ -1,0 +1,98 @@
+1.初始化Git仓库: git init  // 当前目录的版本跟踪
+
+2.添加文件到缓存区：git add <fileName>
+
+3.提交文件到版本库：git commit -m "提交信息"
+
+4.查看提交记录：git log
+
+如果信息太多可以使用：git log --pretty=oneline 直接查看提交的哈希值，HEAD指向的ID
+
+5.退回到提交的上一个版本：git reset --hard HEAD^
+
+ 首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，也就是最新的提交1094adb...（注意我的提交ID和你的肯定不一样），上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100。
+
+ 也可以通过指定 commit id 恢复到指定版本  列如： git reset --hard 1094a (commit id 是一窜很的长的哈希值，可以只写前面几位，但要保证唯一性，git才能正确的找到指定的版本)
+
+ 用改命令也可以恢复某一个文件，列如：git reset HEAD <filename> 
+ git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
+
+6.查看命令历史：git reflog  // 可以查看当前版本的命令历史
+
+7.查看当前文件状态：git status  // 可查看当前目录下版本库文件的更新状态以及当前在那个分支
+
+8.丢弃当前未提交的工作区的修改：git checkout -- <filename>   // 恢复至最新版本库的代码
+
+9.删除当前版本库的文件：git rm <filename>  // 删除后该版本库就不在存在改文件
+
+10.查看分支：git branch
+
+11.创建分支：git branch <name>
+
+12.切换分支：git checkout <name>
+
+13.创建+切换分支：git checkout -b <name>
+
+14.删除分支：git branch -d <name>  // 用-D表示强制删除某一个分支 
+
+15.合并某分支到当前分支：git merge <masterName> // 改命令默认使用 fast forward 快速合并分支
+用当所在分支，合并某个分支，在相同的提交节点中，文件内容存在这差异，就会产生合并冲突，需要进行手动修改
+
+添加 --no-ff 参数可以禁用 fast forwrad 模式 列如： git merge --no-ff -m "merge with no-ff" dev 
+
+16.添加远程版本库：git remote add origin <远程版本库地址>  //把本地仓库添加到远程仓库
+添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
+
+17.推送某分支到远程仓库：git push -u origin master   // 第一个参数是远程仓库名，第二个参数是分支名
+由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+
+18.从远程库克隆：git clone <远程版本库地址> 
+
+19.存储当前工作分支的快照：git stash  // 可以进行多次存储
+
+20.查看当前分支存储快照表：git stash list  // 显示相应哈希值
+
+21.恢复当前分支快照：git stash apply stash@{0} (若没有该值，最近存储的快照)
+
+22.删除当前分支快照：git stash drop stash@{0} （同上）
+
+23.恢复并删除当前分支快照：git stash pop stash@{0} (同上)
+
+24.拉去当前分支：git pull
+
+25.多人协作的工作模式通常是这样：
+
+首先，可以试图用git push origin <branch-name>推送自己的修改；
+
+如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+
+如果合并有冲突，则解决冲突，并在本地提交；
+
+没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功！
+
+如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>。
+
+查看远程库信息，使用git remote -v；
+
+本地新建的分支如果不推送到远程，对其他人就是不可见的；
+
+从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+
+在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+
+从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+26.创建标签：git tag <tagname>  // 不带参数，默认为HEAD,也可以指定一个 commit id 在最后面加上即可
+指定标签信息创建标签 列如： git tag -a <tagname> -m "info" (同上默认HEAD)
+
+27.查看所有标签：git tag
+
+28.推送当前分支一个本地标签：git push origin <tagname>
+
+29.推送当前分支全部未推送的本地标签： git push origin --tags
+
+30.删除一个本地标签：git tag -d <tagname>
+
+31.删除一个远程标签：git push origin :refs/tags/<tagname>

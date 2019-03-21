@@ -1,0 +1,112 @@
+package com.example.contentvaluespractice;
+ 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
+import android.view.View;
+ 
+public class MainActivity extends Activity {
+     
+     private SQLiteDatabase db;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+           setContentView(R.layout. activity_main);
+           
+           SQLiteOpenHelper helper= new DatabaseHelper(this);//SQLiteOpenHelper帮助类进行数据库的操作
+           //执行oncreate 方法返回数据库。db数据库只有在执行了getWritetableDatabase()或getReadableDatabase()方法后执行Oncreate()方法才创建
+            db=helper.getWritableDatabase(); 
+     }
+      
+     //向数据库中插入数据的两种方式，一种是通过sql语句，一种是通过android提供的方法
+     public void insert(View view){
+ 
+      //插入数据的sql语句方法
+      String sql="insert into personData(name,age,birthday) values ('dmk',null,'1988-9-10')";//sql语句执行插入操作
+      db.execSQL(sql);
+ 
+      //插入数据的第二种方式android中提供的方法
+ 
+      //使用ContentValues进行插入操作ContentValues相当于java中的Map以键值对的形式存在
+      ContentValues cv= new ContentValues(); 
+      cv.put("name", "dmj");
+      cv.put("age", 26);
+      db.insert("personData", null,cv);
+     
+     }
+ 
+   //从数据库中删除数据两种方式，一种是通过sql语句，一种是通过android提供的方法
+   public void delete(View view){
+        //1.使用android中的方式
+       String whereClause= "name=?"; //删除条件
+       String[] whereArgs={ "dmk"};
+       db.delete("personData", whereClause, whereArgs);
+      //2.使用execSQL方式实现
+       String sql= "delete from personData where name='dmj'" ;
+       db.execSQL(sql);
+     }
+  //更新数据库中的数据2种方式
+   public void update(View view){
+    //1.使用安卓中的ContentValues
+    ContentValues cv= new ContentValues();
+    cv.put( "name", "df"); //添加要更改的字段及内容
+//  String whereClause="name=?";
+//  String[] whereArgs={" dmk"};
+//  db.update("personDate", cv, whereClause, whereArgs);
+    db.update("personData", cv, "name=?", new String[]{"dmk"});
+ 
+    //2.使用execSQL的方式实现
+    String sql= "update [personData] set age=20 where name='dmj'";
+    db.execSQL(sql);   //execSQL()方法不能返回一个值，
+   }
+ 
+  //查询数据1
+   /*
+    * 通过query实现查询的
+ public Cursor query(String table, String[] columns, String selection, String[]   selectionArgs,
+  String groupBy, String having, String orderBy, String limit)
+         各参数说明：
+     table：表名称
+     colums：列名称数组
+     selection：条件子句，相当于where   举例 "name=?"
+     selectionArgs：条件语句的参数数组  举例 new String[]{ "dmk"}
+     groupBy：分组
+     having：分组条件
+     orderBy：排序类
+     limit：分页查询的限制
+     Cursor：返回值，相当于结果集ResultSet
+    */
+   public void query(View view){
+        Cursor cs= db.query( "personData", null, null, null, null, null, null);
+        if(cs.moveToNext()){
+              for( int i=0;i<cs.getCount();i++){
+                   cs.move(i);
+                   String name=cs.getString(cs.getColumnIndex("name" ));
+                   int age=cs.getInt(cs.getColumnIndex( "age"));
+                   System. out.println(name+ ":"+age);
+                   System.out.println(cs.getColumnIndex("name" ));
+                   System. out.println(cs.getColumnIndex( "age"));
+                   System. out.println(cs.getColumnCount());
+              }
+        }
+           
+   }
+  //数据查询2
+   //通过rawQuery实现的带参数查询
+   /*
+   Cursor c = db.rawQuery("select * from user where username=?",new Stirng[]{"Jack Johnson"});
+   if(cursor.moveToFirst()) {
+   String password = c.getString(c.getColumnIndex("password"));
+   */
+   public void rawquery(View view){
+        Cursor c= db.rawQuery( "select * from personData where name=?", new String[]{"dmj"});
+        if(c.moveToNext()){
+             int age=c.getInt(c.getColumnIndex( "age"));
+              System. out.println(age);
+        }
+   }
+}

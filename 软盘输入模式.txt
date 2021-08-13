@@ -1,0 +1,12 @@
+ <activity android:windowSoftInputMode="stateVisible|adjustResize">
+
+stateAlwaysHidden--->表示文本输入框控件没有获得焦点的情况下总是隐藏
+
+stateHidden--->启动或者关闭Activity时自动隐藏window
+
+adjustResize--->Activity总是调整屏幕的大小以便留出软键盘的空间，容易出现扭曲现象，适合用有在可滚动布局的页面
+
+adjustPan-->当前窗口中焦点输入框以下的内容将被弹出的键盘覆盖，窗口大小不会调整，不出现扭曲现象,适合用在 layout_height=match_parent的页面
+
+adjustNothing   只弹出键盘不做任何操作，会遮挡布局
+

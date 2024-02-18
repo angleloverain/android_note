@@ -97,6 +97,12 @@
 
 31.删除一个远程标签：git push origin :refs/tags/<tagname>
 
+32.查看远程的所有分支 git branch -r
+
+如果远程建立新分析，本地显示没有这个新分支：
+
+使用git fetch origin或者git remote update origin --prune命令更新
+
 push错误
 git push错误failed to push some refs to的解决
 

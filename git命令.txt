@@ -109,3 +109,8 @@ git push错误failed to push some refs to的解决
 使用命令：git pull --rebase origin master
 这条命令表示，撤销上一次的版本提交，把远程仓库的最近更新的提交，合并到本地仓库，然后在提交，就可以从新push到远程仓库
 
+# 3.设置git用户名、密码、邮箱的配置
+$ git config user.name "rain_feng"
+$ git config user.password "123456"
+$ git config user.email "1548429568@qq.com"
+

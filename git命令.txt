@@ -58,6 +58,8 @@
 
 23.恢复并删除当前分支快照：git stash pop stash@{0} (同上)
 
+22.撤回上一次的提交，并保留代码： git reset --soft HEAD^
+
 24.拉去当前分支：git pull
 
 25.多人协作的工作模式通常是这样：
